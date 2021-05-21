@@ -1,2 +1,2 @@
 # MAPSTER
-Routines and methods for discrete dynamical system exploration
+Routines and types for discrete dynamical systems exploration
