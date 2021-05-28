@@ -1,2 +1,4 @@
 # MAPSTER
-Routines and types for discrete dynamical systems exploration
+Project for discussion about OOP principles in C, APIs, project structure and collaborative projects.
+
+Contains routines and types for discrete dynamical systems exploration
