@@ -7,8 +7,14 @@
 
 typedef struct map* map_h;
 
+typedef enum
+{
+    map_dx, // approx. jacobian finite dif.
+} map_params;
+
 map_h // allocate map and set user parameters
-map_create(int (*fw)(const gsl_vector* x0,
+map_create(size_t dim,
+           int (*fw)(const gsl_vector* x0,
                      gsl_vector*       x1,
                      void*             params), // forward map
            int (*bw)(const gsl_vector* x0,
