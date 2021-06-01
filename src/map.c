@@ -88,6 +88,12 @@ map_set_jacobian(map_h mh,
     m->jac = jac;
 }
 
+size_t
+map_get_dim(map_h mh){
+    map* m = (map*)mh;
+    return m->dim;
+}
+
 int // map forward 'order' times
 map_fw(map_h mh, size_t order, const gsl_vector* x0, gsl_vector* x1)
 {
@@ -126,9 +132,9 @@ int // evaluate map jacobian of 'order'
 map_jac(map_h mh, size_t order, const gsl_vector* x0, gsl_matrix* J)
 {
     map* m = (map*)mh;
-    gsl_vector_memcpy(m->xa, x0); // xa = x0
+    gsl_vector_memcpy(m->xa, x0);   // xa = x0
     gsl_matrix_set_identity(m->Jb); // Jb = Id
-    
+
     int status = 0;
     for (size_t i = 0; i < order && status == 0; i++) {
         // Jn(x) = J(Tn-1(x))J(Tn-2(x))...J(x)

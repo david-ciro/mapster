@@ -2,6 +2,7 @@
 #define MAP_H
 
 #include <gsl/gsl_matrix.h>
+#include <gsl/gsl_blas.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -31,6 +32,9 @@ map_set_jacobian(map_h m,
                  int (*jac)(const gsl_vector* x0,
                             gsl_matrix*       J,
                             void*             params));
+
+size_t // get system dimension
+map_get_dim(map_h);
 
 int // map forward 'order' times
 map_fw(map_h m, size_t order, const gsl_vector* x0, gsl_vector* x1);
