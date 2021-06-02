@@ -1,5 +1,5 @@
-#include "map.h"
-#include "orbit.h"
+#include "sch_map.h"
+#include "sch_orbit.h"
 #include <gsl/gsl_vector.h>
 #include <math.h>
 #include <stdbool.h>
@@ -60,24 +60,31 @@ main()
 {
     size_t     dim = 2;
     std_params stdp = { 0.4 };
-    map_h      m = map_create(dim, std_fw, std_bw, &stdp);
+    sch_map    map = sch_map_create(dim, std_fw, std_bw, &stdp);
 
     // initial condition
-    double      x[] = { 0.5, 0.5 };
+    size_t      n_orbits = 100;
+    FILE*       file = fopen("orbits.dat", "w");
     gsl_vector* x0 = gsl_vector_alloc(dim);
-    for (size_t i = 0; i < dim; i++)
-        gsl_vector_set(x0, i, x[i]);
-    // orbit properties
-    size_t order = 1;
-    bool   forward = true;
-    size_t steps = 10000;
-    // create orbit
-    orbit_h orb = orb_create(m, order, forward, steps, x0);
-    // save orbit
-    orb_save(orb, "orbit.dat");
+    for (size_t i = 0; i < n_orbits; i++) {
+        // random initial condition
+        for (size_t i = 0; i < dim; i++)
+            gsl_vector_set(x0, i, 2 * M_PI * drand48());
+        // orbit properties
+        size_t order = 1;
+        bool   forward = true;
+        size_t steps = 10000;
+        // create orbit
+        sch_orbit orbit =
+          sch_orbit_create(map, order, forward, steps, x0);
+        // save orbit
+        sch_orbit_save(orbit, file);
+        // destroy orbit
+        sch_orbit_destroy(orbit);
+    }
 
     // free memory
-    orb_destroy(orb);
-    map_destroy(m);
+    gsl_vector_free(x0);
+    sch_map_destroy(map);
     return 0;
 }
